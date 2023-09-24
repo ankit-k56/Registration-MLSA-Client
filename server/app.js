@@ -10,61 +10,62 @@ console.log(MONGO_URI);
 const app = express();
 
 //For parsing the body as json and it is also important if you want to access body data as req.body.*
-app.use(
-    cors({
-        credentials: true,
-        origin: ['https://frontend.unknownclub.me', 'http://localhost:5173'],
-    })
-);
+// app.use(
+//     cors({
+//         credentials: true,
+//         origin: ['https://frontend.unknownclub.me', 'http://localhost:5173'],
+//     })
+// );
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
 //Server Side Data validations
-const registerSchema = Joi.object({
-    name: Joi.string().min(2).max(30).required().messages({
-        'any.required': 'Name Required',
-        'string.min': 'Name should have at least 2 characters',
-        'string.max': 'Name should have at most 30 characters'
-    }),
-    rollNumber: Joi.string().min(6).max(9).required().messages({
-        'any.required': 'Roll Number Required',
-        'string.min': 'Roll Number should have at least 6 characters',
-        'string.max': 'Roll Number should have at most 9 characters'
-    }),
-    currentYear: Joi.string().length(1).required().messages({
-        'any.required': 'Current Year Required',
-        'string.length': 'Current Year should have exactly 1 character'
-    }),
-    branch: Joi.string().min(1).max(25).required().pattern(/^(?=.*[A-Za-z])/).messages({
-        'any.required': 'Branch Required',
-        'string.min': 'Branch should have at least 1 character',
-        'string.max': 'Branch should have at most 25 characters',
-        'string.pattern.base': 'Branch should contain at least one alphabet'
-    }),
-    kiitEmailId: Joi.string().email().required().messages({
-        'any.required': 'KIIT Email Required',
-        'string.email': 'KIIT Email should be a valid email address'
-    }),
-    personalEmailId: Joi.string().email().required().messages({
-        'any.required': 'Personal Email Required',
-        'string.email': 'Personal Email should be a valid email address'
-    }),
-    interestedField: Joi.string().required(),
-    phoneNumber: Joi.string().min(10).max(15).required().pattern(/^\d+$/).messages({
-        'any.required': 'Phone Number Required',
-        'string.min': 'Phone Number should have at least 10 digits',
-        'string.max': 'Phone Number should have at most 15 digits',
-        'string.pattern.base': 'Phone Number should contain only digits'
-    }),
-    linkedin: Joi.string().optional(),
-    github: Joi.string().min(2).max(100).required().messages({
-        'any.required': 'Github Required',
-        'string.min': 'Github should have at least 2 characters',
-        'string.max': 'Github should have at most 100 characters'
-    }),
-    expectation: Joi.string().optional(),
-});
+// const registerSchema = Joi.object({
+//     name: Joi.string().min(2).max(30).required().messages({
+//         'any.required': 'Name Required',
+//         'string.min': 'Name should have at least 2 characters',
+//         'string.max': 'Name should have at most 30 characters'
+//     }),
+//     rollNumber: Joi.string().min(6).max(9).required().messages({
+//         'any.required': 'Roll Number Required',
+//         'string.min': 'Roll Number should have at least 6 characters',
+//         'string.max': 'Roll Number should have at most 9 characters'
+//     }),
+//     currentYear: Joi.string().length(1).required().messages({
+//         'any.required': 'Current Year Required',
+//         'string.length': 'Current Year should have exactly 1 character'
+//     }),
+//     branch: Joi.string().min(1).max(25).required().pattern(/^(?=.*[A-Za-z])/).messages({
+//         'any.required': 'Branch Required',
+//         'string.min': 'Branch should have at least 1 character',
+//         'string.max': 'Branch should have at most 25 characters',
+//         'string.pattern.base': 'Branch should contain at least one alphabet'
+//     }),
+//     kiitEmailId: Joi.string().email().required().messages({
+//         'any.required': 'KIIT Email Required',
+//         'string.email': 'KIIT Email should be a valid email address'
+//     }),
+//     personalEmailId: Joi.string().email().required().messages({
+//         'any.required': 'Personal Email Required',
+//         'string.email': 'Personal Email should be a valid email address'
+//     }),
+//     // interestedField: Joi.string().required(),
+//     phoneNumber: Joi.string().min(10).max(15).required().pattern(/^\d+$/).messages({
+//         'any.required': 'Phone Number Required',
+//         'string.min': 'Phone Number should have at least 10 digits',
+//         'string.max': 'Phone Number should have at most 15 digits',
+//         'string.pattern.base': 'Phone Number should contain only digits'
+//     }),
+//     linkedin: Joi.string().optional(),
+//     github: Joi.string().min(2).max(100).required().messages({
+//         'any.required': 'Github Required',
+//         'string.min': 'Github should have at least 2 characters',
+//         'string.max': 'Github should have at most 100 characters'
+//     }),
+//     expectation: Joi.string().optional(),
+// });
 
 //Registrations MongoDB Schema
 const registrationSchema = new Schema({
@@ -135,13 +136,17 @@ const registrationSchema = new Schema({
     },
     github: {
         type: String,
-        required: [true, 'Github Required'],
-        minlength: [2, 'Github should have at least 2 characters'],
+        // minlength: [2, 'Github should have at least 2 characters'],
         maxlength: [100, 'Github should have at most 100 characters']
     },
     expectation: {
         type: String,
         default: "None Given",
+    },
+    checkbox:{
+        type: Boolean,
+        required: [true, "Please consent to continue"]
+
     },
     ip: {
         type: String,
@@ -160,7 +165,7 @@ const reg = model('registration', registrationSchema);
 //API Endpoints for registrations
 app.post("/api/register", async (req, res) => {
     try {
-        const { name, rollNumber, currentYear, branch, kiitEmailId, personalEmailId, phoneNumber, interestedField, linkedin, github, expectation } = req.body;
+        const { name, rollNumber, currentYear, branch, kiitEmailId, personalEmailId, phoneNumber, interestedField, linkedin, github, expectation, checkbox } = req.body;
         const ip = req.ip;
         const host = req.get('host');
         const userAgent = req.get('user-agent');
@@ -171,6 +176,7 @@ app.post("/api/register", async (req, res) => {
         
         const registration = new reg({
             name, rollNumber, currentYear, branch, kiitEmailId, personalEmailId, phoneNumber, interestedField, linkedin, github, expectation,
+            checkbox,
             ip,
             host,
             userAgent,
