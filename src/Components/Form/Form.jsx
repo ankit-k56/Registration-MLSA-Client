@@ -17,11 +17,10 @@ const initialValues = {
   kiitEmailId: "",
   personalEmailId: "",
   phoneNumber: "",
-  // interestedField: "",
   linkedin: "",
   github: "",
   expectation: "",
-  checkbox: null,
+  checkbox: false,
 };
 
 const Form = () => {
@@ -49,6 +48,8 @@ const Form = () => {
       }
     },
   });
+
+  // console({values})
 
   return (
     <>
