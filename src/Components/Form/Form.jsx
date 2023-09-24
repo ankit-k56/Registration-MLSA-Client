@@ -12,6 +12,7 @@ const errNotify = (msg) => toast.error(msg);
 const initialValues = {
   name: "",
   rollNumber: "",
+  age: "",
   currentYear: "",
   branch: "",
   kiitEmailId: "",
@@ -90,6 +91,20 @@ const Form = () => {
                 onBlur={handleBlur}
                 value={values.rollNumber}
                 className={errors.rollNumber && touched.rollNumber ? "invalidInput" : ""}
+              />
+            </div>
+             <div className="registrationInputField">
+              <label htmlFor="age">Age</label>
+              <input
+                type="text"
+                autoComplete="off"
+                name="age"
+                id="age"
+                placeholder="Please Enter Your age"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.age}
+                className={errors.age && touched.age? "invalidInput" : ""}
               />
             </div>
             <div className="registrationInputField">
