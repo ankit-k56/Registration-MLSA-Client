@@ -10,13 +10,13 @@ console.log(MONGO_URI);
 const app = express();
 
 //For parsing the body as json and it is also important if you want to access body data as req.body.*
-// app.use(
-//     cors({
-//         credentials: true,
-//         origin: ['https://frontend.unknownclub.me', 'http://localhost:5173'],
-//     })
-// );
-app.use(cors())
+app.use(
+    cors({
+        credentials: true,
+        origin: ['https://frontend.unknownclub.me', 'http://localhost:5173', 'https://registration-mlsa-client.vercel.app'],
+    })
+);
+// app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -201,7 +201,7 @@ app.use((req, res) => {
         success: false,
     });
 });
-
+app.use('/')
 
 //Recursive function to connect to the database and start the app at a particular port
 const startApp = async () => {

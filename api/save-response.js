@@ -12,6 +12,7 @@ const ResponseData = z.object({
   linkedin: z.string(),
   github: z.string(),
   expectation: z.string(),
+  checkbox: z.boolean()
 });
 
 const EventResponseSchema = new mongoose.Schema({
@@ -28,6 +29,7 @@ const EventResponseSchema = new mongoose.Schema({
   ip: String,
   host: String,
   userAgent: String,
+  checkbox: Boolean
 });
 
 const EventResponse = mongoose.model("EventResponse", EventResponseSchema);
@@ -44,6 +46,9 @@ export default async function handler(req, res) {
 
   if (!body.linkedin) {
     body.linkedin = "None Given";
+  }
+  if (!body.github) {
+    body.github = "None Given";
   }
 
   const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
