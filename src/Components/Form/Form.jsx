@@ -35,7 +35,7 @@ const Form = () => {
       let res;
       
       try {
-        res = await axios.post("https://hacktoberxmlsa.mlsakiit.com/api/register", values);        
+        res = await axios.post("https://mlsa-hack.vercel.app/api/register", values);        
       } catch (error) {
         errNotify(error);
       }
