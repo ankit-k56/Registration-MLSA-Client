@@ -17,11 +17,10 @@ const initialValues = {
   kiitEmailId: "",
   personalEmailId: "",
   phoneNumber: "",
-  // interestedField: "",
   linkedin: "",
   github: "",
   expectation: "",
-  checkbox: null,
+  checkbox: false,
 };
 
 const Form = () => {
@@ -35,7 +34,7 @@ const Form = () => {
       let res;
       
       try {
-        res = await axios.post("https://mlsa-hack.vercel.app/api/register", values);        
+        res = await axios.post("https://hacktoberxmlsa.mlsakiit.com/api/register", values);        
       } catch (error) {
         errNotify(error);
       }
@@ -49,6 +48,8 @@ const Form = () => {
       }
     },
   });
+
+  // console({values})
 
   return (
     <>

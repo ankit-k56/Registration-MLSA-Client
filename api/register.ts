@@ -56,7 +56,7 @@ export default async function handler(req, res) {
   const userAgent = req.headers["user-agent"];
 
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI as string);
 
     const isValidData = ResponseData.safeParse(body);
 
