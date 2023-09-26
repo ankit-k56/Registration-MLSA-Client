@@ -56,8 +56,9 @@ const Form = () => {
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
       <div className="registrationForm">
-      <div className='registrationFormELLipse'>
-      <img src={docsIcon}/>
+      {/* <div className='registrationFormELLipse'> */}
+      <div>
+      {/* <img src={docsIcon}/> */}
       </div>
         <div className="registrationFormContainer">
           <form onSubmit={handleSubmit}>
@@ -281,7 +282,7 @@ const Form = () => {
                 onChange={handleChange} 
                 className={errors.checkbox && touched.checkbox ? "Please consent to continue" : ""}
                 />
-              <label onClick={() => setconsentOnclick((prev) => !prev)}>I consent to my data being shared with MLSA&apos;s sponsors and receive promotional content</label>
+              <label >I consent to my data being shared with MLSA&apos;s sponsors and receive promotional content</label>
             </div>
             <div className="registrationFormButtonContainer">
               <button type="submit" className="submitBtn">
